@@ -1,22 +1,15 @@
 #!/bin/bash
-clear
 #Christian Arth D. Lingat
+clear
 #get the current memory usage by parsing the string and computing
 USED_MEM=$(free | grep Mem | awk '{printf("%.0f"), $3/$2 * 100.0}')
-
-#help function inform the user how to use the current script
-function help {
-echo "INSTRUCTIONS: memory_check -w [value of warning threshold in %] -c [value of critical threshold in %] -e [email address of the recipient to receive the given info]"
-echo "Example: memory_check -w 60 -c 90 -e email@mine.com"
-}
-
 #show instruction when no value or argument is provided
 if [ $# -eq 0 ]; then
         echo "No value is provided";
-        help
+        echo "INSTRUCTIONS: memory_check -w [value of warning threshold in %] -c [value of critical threshold in %] -e [email address of the recipient to receive the given info]"
+echo "Example: memory_check -w 60 -c 90 -e email@mine.com"
         exit 0
 fi
-
 
 while getopts ":w:c:e:" opt; do
         case $opt in
@@ -42,16 +35,16 @@ done
 
 if [ $warning -lt $critical ]; then
                 if [ $USED_MEM -lt $warning ]; then
-                        echo "The current memory is in good state" | mail -s "GOOD STATE OF MEMORY" cadlingat@chikka.com
+                        echo "The current memory is in good state" | mail -s "CURRENT MEMORY IS IN GOOD STATE" $email
                         exit 0
                 elif [[ $USED_MEM -ge $warning && $USED_MEM -lt $critical ]]; then
-                        echo "The memory usage is in warning state" | mail -s "WARNING STATE OF MEMORY" cadlingat@chikka.com
+                        echo "The memory usage is in warning state" | mail -s "CURRENT MEMORY IS IN WARNING STATE" $email
                         exit 1
                 elif [ $USED_MEM -ge $critical ]; then
-                        echo "The memory usage is in critical state. Kindly free some memory space" | mail -s "CRITICAL MEMORY STATE OF MEMORY" cadlingat@chikka.com;
+                        echo "The memory usage is in critical state. Kindly free some memory space" | mail -s "CURRENT MEMORY IS IN CRITICAL STATE" $email
                         exit 2
                 fi
 else
-        echo " The warning threshold($warning%) must be less than the critical threshold($critical%)";
+        echo "The warning threshold($warning%) input must be less than the critical threshold($critical%) input";
         exit 0
 fi
