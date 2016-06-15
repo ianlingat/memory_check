@@ -1,0 +1,89 @@
+#Class for package installation of VIM,CURL and GIT
+class package_install {
+package { 'vim-enhanced':
+    provider => yum,
+    ensure   => installed,
+        }
+package { 'curl':
+    provider => yum,
+    ensure   => installed,
+        }
+package { 'git':
+    provider => yum,
+    ensure   => installed,
+        }
+}
+
+#Class for creating a user monitor
+class user {
+
+  user { 'monitor':
+    ensure     => present,
+    home       => '/home/monitor',
+    shell      => '/bin/bash',
+    managehome => true,
+       }
+}
+
+#Class for creating a directory /home/monitor/scripts
+class directory {
+file { '/home/monitor/scripts':
+    ensure => 'directory',
+    owner  => 'monitor',
+    group  => 'monitor',
+    mode   => '700',
+     }
+}
+
+#Class for creating a directory /home/monitor/src
+class directory_2 {
+file { '/home/monitor/src':
+    ensure => 'directory',
+    owner  => 'monitor',
+    group  => 'monitor',
+    mode   => '700',
+     }
+}
+
+#Class for getting the script in github
+class script {
+exec {'get_script':
+  command => "/usr/bin/wget --no-check-certificate https://raw.githubusercontent.com/ianlingat/memory_check/master/memory_check.txt -O /home/monitor/scripts/check_memory",
+  creates => "/home/monitor/scripts/check_memory",
+    }
+file{'/home/monitor/scripts/check_memory':
+  mode => '777',
+  require => Exec["get_script"],
+   }
+}
+
+#Class for creating a softlink of check_memory
+class softlink {
+file { '/home/monitor/src/my_memory_check':
+ ensure => link,
+ target => '/home/monitor/scripts/check_memory'
+     }
+}
+
+#Class for crontab of check_memory by using the created softlink
+class crontab {
+cron {'cron':
+        command => "sh /home/monitor/src/my_memory_check -w 60 -c 80 -e cadlingat@chikka.com",
+        minute => '10',
+        hour => '*',
+        month => '*',
+        weekday  => '*',
+        monthday => '*',
+}
+}
+
+#Class for node bpx.server.local
+node 'bpx.server.local' {
+        include 'package_install'
+ include 'user'
+ include 'directory'
+ include 'directory_2'
+ include 'script'
+ include 'softlink'
+ include 'crontab'
+}
