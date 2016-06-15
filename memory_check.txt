@@ -9,7 +9,7 @@ USED_MEM=$(free | grep Mem | awk '{printf("%.0f"), $3/$2 * 100.0}')
 if [ $# -eq 0 ]; then
         echo "No value is provided";
         echo "INSTRUCTIONS: memory_check -w [value of warning threshold in %] -c [value of critical threshold in %] -e [email address of the recipient to receive the given info]"
-echo "Example: memory_check -w 60 -c 90 -e email@mine.com"
+        echo "Example: memory_check -w 60 -c 90 -e email@mine.com"
         exit 0
 fi
 
