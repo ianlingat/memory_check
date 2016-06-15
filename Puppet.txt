@@ -1,3 +1,4 @@
+#Christian Arth D. Lingat
 #Class for package installation of VIM,CURL and GIT
 class package_install {
 package { 'vim-enhanced':
