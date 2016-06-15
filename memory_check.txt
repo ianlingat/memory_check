@@ -1,6 +1,8 @@
 #!/bin/bash
 #Christian Arth D. Lingat
 clear
+#get the current date and time with a format of YYYYMMDD HH:MM
+DATE=`date +%Y%m%d" "%H:%M`
 #get the current memory usage by parsing the string and computing
 USED_MEM=$(free | grep Mem | awk '{printf("%.0f"), $3/$2 * 100.0}')
 #show instruction when no value or argument is provided
@@ -35,13 +37,13 @@ done
 
 if [ $warning -lt $critical ]; then
                 if [ $USED_MEM -lt $warning ]; then
-                        echo "The current memory is in good state" | mail -s "CURRENT MEMORY IS IN GOOD STATE" $email
+                        echo "The current memory is in good state" | mail -s "$DATE CURRENT MEMORY IS IN GOOD STATE" $email
                         exit 0
                 elif [[ $USED_MEM -ge $warning && $USED_MEM -lt $critical ]]; then
-                        echo "The memory usage is in warning state" | mail -s "CURRENT MEMORY IS IN WARNING STATE" $email
+                        echo "The memory usage is in warning state" | mail -s "$DATE CURRENT MEMORY IS IN WARNING STATE" $email
                         exit 1
                 elif [ $USED_MEM -ge $critical ]; then
-                        echo "The memory usage is in critical state. Kindly free some memory space" | mail -s "CURRENT MEMORY IS IN CRITICAL STATE" $email
+                        echo "The memory usage is in critical state. Kindly free some memory space" | mail -s "$DATE CURRENT MEMORY IS IN CRITICAL STATE" $email
                         exit 2
                 fi
 else
