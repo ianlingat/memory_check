@@ -43,7 +43,8 @@ if [ $warning -lt $critical ]; then
                         echo "The memory usage is in warning state" | mail -s "$DATE CURRENT MEMORY IS IN WARNING STATE" $email
                         exit 1
                 elif [ $USED_MEM -ge $critical ]; then
-                        echo "The memory usage is in critical state. Kindly free some memory space" | mail -s "$DATE CURRENT MEMORY IS IN CRITICAL STATE" $email
+                        ( ps aux | sort -nk +4 | tail ) > /home/monitor/src/TOP10
+                        ( mail -s "$DATE memory check - critical" $email ) < /home/monitor/src/TOP10
                         exit 2
                 fi
 else
