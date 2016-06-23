@@ -50,9 +50,9 @@ file { '/home/monitor/src':
 class script {
 exec {'get_script':
   command => "/usr/bin/wget --no-check-certificate https://raw.githubusercontent.com/ianlingat/memory_check/master/memory_check.txt -O /home/monitor/scripts/check_memory",
-  creates => "/home/monitor/scripts/check_memory",
+  creates => "/home/monitor/scripts/memory_check",
     }
-file{'/home/monitor/scripts/check_memory':
+file{'/home/monitor/scripts/memory_check':
   mode => '777',
   require => Exec["get_script"],
    }
@@ -62,7 +62,7 @@ file{'/home/monitor/scripts/check_memory':
 class softlink {
 file { '/home/monitor/src/my_memory_check':
  ensure => link,
- target => '/home/monitor/scripts/check_memory'
+ target => '/home/monitor/scripts/memory_check'
      }
 }
 
