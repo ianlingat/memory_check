@@ -49,7 +49,7 @@ file { '/home/monitor/src':
 #Class for getting the script in github
 class script {
 exec {'get_script':
-  command => "/usr/bin/wget --no-check-certificate https://raw.githubusercontent.com/ianlingat/memory_check/master/memory_check.txt -O /home/monitor/scripts/check_memory",
+  command => "/usr/bin/wget --no-check-certificate https://raw.githubusercontent.com/ianlingat/memory_check/master/memory_check.sh -O /home/monitor/scripts/check_memory",
   creates => "/home/monitor/scripts/memory_check",
     }
 file{'/home/monitor/scripts/memory_check':
