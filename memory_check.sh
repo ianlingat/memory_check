@@ -16,14 +16,11 @@ fi
 while getopts ":w:c:e:" opt; do
         case $opt in
                 w)
-                warning=$OPTARG
-                ;;
+                warning=$OPTARG;;
                 c)
-                critical=$OPTARG
-                ;;
+                critical=$OPTARG;;
                 e)
-                email=$OPTARG
-                ;;
+                email=$OPTARG;;
                \?)
                 echo "Invalid input: -$OPTARG:" >&2
                 exit 0
