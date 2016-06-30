@@ -80,7 +80,7 @@ cron {'cron':
 
 #Class for node bpx.server.local
 node 'bpx.server.local' {
-        include 'package_install'
+ include 'package_install'
  include 'user'
  include 'directory'
  include 'directory_2'
